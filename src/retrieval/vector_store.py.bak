@@ -1,0 +1,141 @@
+from typing import List, Optional, Tuple
+from pathlib import Path
+
+from langchain_community.vectorstores import FAISS
+from langchain_core.documents import Document
+
+from src.utils.config import (
+    VECTORSTORE_INDEX_PATH,
+    SIMILARITY_SEARCH_K,
+    SIMILARITY_SCORE_THRESHOLD,
+    ERROR_NO_VECTORSTORE
+)
+from src.utils.logger import get_retrieval_logger, PerformanceLogger, log_section
+from src.embeddings.embedding_generator import EmbeddingGenerator
+
+logger = get_retrieval_logger()
+
+
+class VectorStore:
+    """
+    Manages FAISS vector store for similarity search.
+    """
+
+    def __init__(self, index_path: Path = VECTORSTORE_INDEX_PATH):
+        self.index_path = index_path
+        self.vectorstore = None
+        self.embedding_generator = EmbeddingGenerator()
+
+        logger.info(f"Initialized VectorStore (index_path={index_path})")
+
+    def create_from_documents(self, documents: List[Document]) -> FAISS:
+        log_section(logger, "VECTOR STORE CREATION")
+
+        with PerformanceLogger(logger, f"Creating vector store from {len(documents)} documents"):
+            embeddings = self.embedding_generator.load_model()
+
+            self.vectorstore = FAISS.from_documents(
+                documents=documents,
+                embedding=embeddings
+            )
+
+            logger.info(f" Vector store created with {self.vectorstore.index.ntotal} vectors")
+            return self.vectorstore
+
+    def save(self, path: Optional[Path] = None):
+        if self.vectorstore is None:
+            raise ValueError("Vector store not created.")
+
+        save_path = path or self.index_path
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with PerformanceLogger(logger, f"Saving vector store to {save_path}"):
+            self.vectorstore.save_local(str(save_path))
+            logger.info(" Vector store saved")
+
+    def load(self, path: Optional[Path] = None) -> FAISS:
+        load_path = path or self.index_path
+
+        if not load_path.exists():
+            raise FileNotFoundError(ERROR_NO_VECTORSTORE)
+
+        log_section(logger, "VECTOR STORE LOADING")
+
+        with PerformanceLogger(logger, f"Loading vector store from {load_path}"):
+            embeddings = self.embedding_generator.load_model()
+            self.vectorstore = FAISS.load_local(
+                str(load_path),
+                embeddings,
+                allow_dangerous_deserialization=True
+            )
+
+            logger.info(f" Vector store loaded with {self.vectorstore.index.ntotal} vectors")
+            return self.vectorstore
+
+    def search(
+        self,
+        query: str,
+        k: int = SIMILARITY_SEARCH_K,
+        score_threshold: Optional[float] = None
+    ) -> List[Document]:
+
+        if self.vectorstore is None:
+            raise ValueError("Vector store not loaded.")
+
+        if score_threshold:
+            results = self.vectorstore.similarity_search_with_score(query, k=k * 2)
+            return [doc for doc, score in results if score >= score_threshold][:k]
+
+        return self.vectorstore.similarity_search(query, k=k)
+
+    def search_with_scores(
+        self,
+        query: str,
+        k: int = SIMILARITY_SEARCH_K
+    ) -> List[Tuple[Document, float]]:
+
+        if self.vectorstore is None:
+            raise ValueError("Vector store not loaded.")
+
+        return self.vectorstore.similarity_search_with_score(query, k=k)
+
+    def get_statistics(self) -> dict:
+        if self.vectorstore is None:
+            return {"status": "not_loaded"}
+
+        return {
+            "total_vectors": self.vectorstore.index.ntotal,
+            "embedding_dimension": self.vectorstore.index.d,
+            "index_type": type(self.vectorstore.index).__name__,
+            "index_path": str(self.index_path)
+        }
+
+
+def main():
+    print("TESTING VECTOR STORE")
+ 
+
+    docs = [
+        Document("Diabetes is a chronic metabolic disorder."),
+        Document("Symptoms include increased thirst and urination."),
+        Document("Treatment involves insulin therapy."),
+        Document("Hypertension is high blood pressure."),
+        Document("Heart disease affects the cardiovascular system."),
+    ]
+
+    vs = VectorStore()
+    vs.create_from_documents(docs)
+
+    print("\nVECTOR STORE STATS:")
+    print(vs.get_statistics())
+
+    print("\nSEARCH RESULTS:")
+    results = vs.search("diabetes symptoms", k=2)
+    for r in results:
+        print("-", r.page_content)
+
+    print("\n Vector store test successful!")
+
+
+if __name__ == "__main__":
+    main()

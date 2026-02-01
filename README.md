@@ -11,13 +11,13 @@ Unlike generic chatbots, Medibot **retrieves first and generates second** — ev
 <div align="center">
 
 ### Welcome Screen
-<img src="assets/images/welcome_screen.jpeg" width="900" />
+![Welcome Screen](assets/images/welcome_screen.jpeg)
 
 ### Medical Q&A with Source Citations
-<img src="assets/images/chat_response.jpeg" width="900" />
+![Chat Response](assets/images/chat_response.jpeg)
 
 ### Source Attribution
-<img src="assets/images/source_citations.jpeg" width="900" />
+![Sources](assets/images/source_citations.jpeg)
 
 </div>
 
@@ -62,7 +62,7 @@ This is an educational and research project. It demonstrates the same architectu
 | **Vector Index** | FAISS (dense vector similarity search) |
 | **Embedding Dimension** | 384 |
 
-> ⚠️ **Scope Limitation:** The corpus covers **A–B topics only**. When a question falls outside this range, Medibot responds:
+> ⚠️ **Scope Limitation:** The corpus covers **limited topics only**. When a question falls outside this range, Medibot responds:
 > *"I am not certain based on the provided medical sources."*
 >
 > This behavior is intentional — not a bug.
@@ -140,15 +140,15 @@ This is an educational and research project. It demonstrates the same architectu
 | **PyPDF** | Extracts text from the encyclopedia PDF |
 | **PyTorch** | Model inference with hardware acceleration |
 
-### Hardware
+### Hardware Support
 
-| Device | Support | How |
+| Device | Supported | How |
 |---|---|---|
-| **Apple Silicon (M1/M2/M3)** | ✅ Native | PyTorch MPS — auto-detected at startup |
-| **NVIDIA GPU** | ✅ Supported | PyTorch CUDA — auto-detected at startup |
-| **CPU** | ✅ Fallback | Works on any machine, slower inference |
+| **Apple Silicon (M1/M2/M3)** | ✅ | PyTorch MPS — auto-detected at startup |
+| **NVIDIA GPU** | ✅ | PyTorch CUDA — auto-detected at startup |
+| **CPU** | ✅ | Fallback — works on any machine |
 
-> Everything runs locally. No external APIs or paid services are required. Device selection is automatic — `config.py` detects MPS, CUDA, or CPU at import time.
+> Everything runs locally. No external APIs or paid services required. Device selection is automatic — `config.py` detects MPS, CUDA, or CPU at import time.
 
 ---
 
@@ -193,7 +193,7 @@ Medibot/
 ├── vectorstore/                     # FAISS index — auto-generated, git-ignored
 ├── logs/                            # Runtime logs — git-ignored
 └── assets/
-    └── screenshots/                 # README visuals
+    └── images/                      # README screenshots
 ```
 
 ---
@@ -350,6 +350,7 @@ A system that confidently gives wrong medical information is worse than one that
 Every answer shows exactly where it came from — document name, page number. Users can verify. That's how trust works.
 
 These are the same principles behind production medical AI systems. Medibot applies them at a scale that's clear, reproducible, and learnable.
+
 ---
 
 ## 📄 License
@@ -362,9 +363,9 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 | Platform | Link |
 |---|---|
-| GitHub | [Your GitHub](https://github.com/yourusername) |
-| LinkedIn | [Your LinkedIn](https://linkedin.com/in/yourprofile) |
-| Email | your.email@example.com |
+| GitHub | [Vidhikdm](https://github.com/Vidhikdm) |
+| LinkedIn | [Vidhi Kadam](https://www.linkedin.com/in/vidhikadam/) |
+| Email | vidhi.kadam1501@gmail.com |
 
 ---
 

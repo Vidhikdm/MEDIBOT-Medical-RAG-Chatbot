@@ -1,0 +1,60 @@
+# -----------------------------
+# Medibot – Python Requirements
+# -----------------------------
+
+# IMPORTANT:
+# PyTorch MUST be installed via conda (NOT pip)
+# conda install pytorch torchvision torchaudio -c conda-forge
+
+# -----------------------------
+# LangChain Core
+# -----------------------------
+langchain==0.1.4
+langchain-community==0.0.20
+langchain-core==0.1.23
+
+# -----------------------------
+# Transformers & HF Ecosystem
+# -----------------------------
+transformers==4.36.2
+tokenizers==0.15.1
+accelerate==0.25.0
+huggingface-hub>=0.19.0,<0.21.0
+
+# -----------------------------
+# Embeddings
+# -----------------------------
+sentence-transformers==2.3.1
+
+# -----------------------------
+# Vector Store
+# -----------------------------
+faiss-cpu==1.7.4
+
+# -----------------------------
+# Document Processing
+# -----------------------------
+pypdf==3.17.4
+pymupdf==1.23.8
+
+# -----------------------------
+# Web / UI
+# -----------------------------
+chainlit==1.0.200
+
+# -----------------------------
+# Config & Utilities
+# -----------------------------
+python-dotenv==1.0.0
+pyyaml==6.0.3
+numpy==1.26.3
+tqdm==4.67.1
+rich==13.7.0
+colorlog==6.8.0
+
+# -----------------------------
+# Development (Optional)
+# -----------------------------
+pytest==7.4.4
+black==23.12.1
+flake8==7.0.0

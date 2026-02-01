@@ -1,34 +1,102 @@
+# =========================
 # Python
+# =========================
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+.Python
 
-# Virtual environments
+# Build / distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+MANIFEST
+wheels/
+
+# =========================
+# Virtual Environments
+# =========================
 venv/
 env/
+ENV/
 .venv/
 
-# VS Code
+# =========================
+# IDEs & Editors
+# =========================
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
 
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+*.ipynb
+
+# =========================
 # Environment variables
+# =========================
 .env
 .env.*
+.env.local
 
+# =========================
 # Logs
+# =========================
 logs/
 *.log
 
-# Vector database
-vectorstore/
-
-# Data (large files)
+# =========================
+# Data (large / private)
+# =========================
 data/raw/*.pdf
-data/processed/
+data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
-# Jupyter
-.ipynb_checkpoints/
+# =========================
+# Vector Store (FAISS)
+# =========================
+vectorstore/*
+!vectorstore/.gitkeep
+*.faiss
+*.pkl
 
-# macOS
-.DS_Store
+# =========================
+# Model & HuggingFace cache
+# =========================
+.cache/
+models/
+.huggingface/
+
+# =========================
+# Chainlit
+# =========================
+.chainlit/
+
+# =========================
+# Testing
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# =========================
+# Docs build
+# =========================
+docs/_build/
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+*.tmp
