@@ -9,16 +9,11 @@ Unlike generic chatbots, Medibot **retrieves first and generates second** — ev
 ## 📸 Screenshots
 
 <div align="center">
-
-### Welcome Screen
-![Welcome Screen](assets/images/welcome_screen.jpeg)
-
-### Medical Q&A with Source Citations
-![Chat Response](assets/images/chat_response.jpeg)
-
-### Source Attribution
-![Sources](assets/images/source_citations.jpeg)
-
+  <img src="assets/images/welcome_screen.jpeg" width="900" alt="Welcome Screen" />
+  <br/><br/>
+  <img src="assets/images/chat_response.jpeg" width="900" alt="Medical Q&A with citations" />
+  <br/><br/>
+  <img src="assets/images/source_citations.jpeg" width="900" alt="Source attribution" />
 </div>
 
 ---
@@ -73,38 +68,38 @@ This is an educational and research project. It demonstrates the same architectu
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                      USER QUESTION                        │
+│                      USER QUESTION                       │
 └──────────────────────────┬───────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│                   CHAINLIT WEB UI                         │
-│              (conversational interface)                   │
+│                   CHAINLIT WEB UI                        │
+│              (conversational interface)                  │
 └──────────────────────────┬───────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│              FAISS VECTOR SEARCH                          │
-│        semantic similarity over 3,400 chunks              │
-│              retrieves top-k = 3                          │
+│              FAISS VECTOR SEARCH                         |
+│        semantic similarity over 3,400 chunks             │
+│              retrieves top-k = 3                         │
 └──────────────────────────┬───────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│             CONTEXT ASSEMBLY                              │
-│     retrieved chunks → structured prompt                  │
+│             CONTEXT ASSEMBLY                             │
+│     retrieved chunks → structured prompt                 │
 └──────────────────────────┬───────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
 │           FLAN-T5 LLM GENERATION                         │
-│     generates answer using ONLY retrieved context         │
+│     generates answer using ONLY retrieved context        │
 └──────────────────────────┬───────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────┐
-│              FINAL RESPONSE                               │
-│         answer + source citations + disclaimer            │
+│              FINAL RESPONSE                              │
+│         answer + source citations + disclaimer           │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -155,45 +150,73 @@ This is an educational and research project. It demonstrates the same architectu
 ## 📂 Project Structure
 
 ```
-Medibot/
+MEDIBOT-Medical-RAG-Chatbot/
 │
-├── main.py                          # Chainlit app — entry point
-├── chainlit.md                      # Welcome screen content
-├── requirements.txt                 # Python dependencies
-├── .env.example                     # Environment variable template
-├── .gitignore                       # Git exclusion rules
+├── README.md
+│   Project overview, architecture, setup instructions, and usage
 │
-├── .chainlit/
-│   └── config.toml                  # UI name, theme, port
+├── LICENSE
+│   Open-source license (MIT)
 │
-├── scripts/
-│   ├── build_vectorstore.py         # PDF → chunks → embeddings → FAISS index
-│   ├── test_rag_quick.py            # Single end-to-end RAG validation
-│   └── test_full_rag.py             # 5-stage comprehensive pipeline test
+├── .gitignore
 │
-├── src/
-│   ├── __init__.py
-│   ├── utils/
-│   │   ├── config.py                # Single source of truth for all settings
-│   │   └── logger.py                # File + console logging with timers
-│   ├── ingestion/
-│   │   ├── pdf_processor.py         # PDF loading, extraction, metadata
-│   │   └── text_splitter.py         # Recursive chunking (size=1000, overlap=200)
-│   ├── retrieval/
-│   │   ├── embeddings.py            # Sentence-Transformer wrapper
-│   │   └── vector_search.py         # FAISS: create, save, load, search
-│   └── generation/
-│       ├── llm_handler.py           # Flan-T5 loading + text generation
-│       └── prompt_templates.py      # QA prompts + source formatting
+├── requirements.txt
+│   Core Python dependencies required to run Medibot
+│
+├── main.py
+│   Entry point for the Chainlit web application
+│
+├── chainlit.md
+│   Welcome screen content displayed in the Chainlit UI
+│
+├── assets/
+│   └── images/
+│       Curated screenshots used in the README
+│       (welcome screen, chat response, source citations)
 │
 ├── data/
-│   ├── raw/                         # Place encyclopedia PDF here
-│   └── processed/                   # Reserved for preprocessing output
+│   ├── raw/
+│   │   Placeholder for the Gale Encyclopedia PDF (not committed)
+│   │   └── .gitkeep
+│   │
+│   └── processed/
+│       Reserved for future preprocessing outputs
+│       └── .gitkeep
 │
-├── vectorstore/                     # FAISS index — auto-generated, git-ignored
-├── logs/                            # Runtime logs — git-ignored
-└── assets/
-    └── images/                      # README screenshots
+├── vectorstore/
+│   FAISS index output directory (generated locally, not committed)
+│   └── .gitkeep
+│
+├── scripts/
+│   Standalone utilities and validation scripts
+│   ├── build_vectorstore.py     # PDF → chunks → embeddings → FAISS index
+│   ├── test_rag_quick.py         # Fast end-to-end RAG validation
+│   ├── test_full_rag.py          # Comprehensive pipeline testing
+│   └── diag_native_crash.py      # Hardware / native library diagnostics
+│
+├── src/
+│   Core Medibot library code
+│   │
+│   ├── embeddings/
+│   │   Sentence-transformer embedding wrappers
+│   │
+│   ├── ingestion/
+│   │   PDF loading, text extraction, and chunking
+│   │
+│   ├── retrieval/
+│   │   FAISS vector store creation, loading, and search
+│   │
+│   ├── generation/
+│   │   LLM loading, prompt control, and response generation
+│   │
+│   └── utils/
+│       Centralized configuration, logging, and helpers
+│
+├── tests/
+│   Automated unit and integration tests
+│
+└── docs/ (optional / future)
+    Design notes, experiments, or evaluation results
 ```
 
 ---
