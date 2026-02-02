@@ -151,72 +151,45 @@ This is an educational and research project. It demonstrates the same architectu
 
 ```
 MEDIBOT-Medical-RAG-Chatbot/
-│
-├── README.md
-│   Project overview, architecture, setup instructions, and usage
-│
-├── LICENSE
-│   Open-source license (MIT)
-│
-├── .gitignore
-│
-├── requirements.txt
-│   Core Python dependencies required to run Medibot
-│
-├── main.py
-│   Entry point for the Chainlit web application
-│
-├── chainlit.md
-│   Welcome screen content displayed in the Chainlit UI
+├── main.py                         # Chainlit app entry point
+├── README.md                        # Project overview + setup
+├── LICENSE                          # MIT License
+├── .gitignore                       # Excludes data, vectorstore, logs, caches
+├── requirements.txt                 # Python dependencies
+├── chainlit.md                      # Chainlit welcome screen content
 │
 ├── assets/
-│   └── images/
-│       Curated screenshots used in the README
-│       (welcome screen, chat response, source citations)
+│   └── images/                      # Curated screenshots used in README
 │
 ├── data/
-│   ├── raw/
-│   │   Placeholder for the Gale Encyclopedia PDF (not committed)
+│   ├── raw/                         # Place encyclopedia PDF here (not committed)
 │   │   └── .gitkeep
-│   │
-│   └── processed/
-│       Reserved for future preprocessing outputs
+│   └── processed/                   # Reserved for future preprocessing output
 │       └── .gitkeep
 │
-├── vectorstore/
-│   FAISS index output directory (generated locally, not committed)
-│   └── .gitkeep
-│
 ├── scripts/
-│   Standalone utilities and validation scripts
-│   ├── build_vectorstore.py     # PDF → chunks → embeddings → FAISS index
-│   ├── test_rag_quick.py         # Fast end-to-end RAG validation
-│   ├── test_full_rag.py          # Comprehensive pipeline testing
-│   └── diag_native_crash.py      # Hardware / native library diagnostics
+│   ├── build_vectorstore.py          # PDF → chunks → embeddings → FAISS index
+│   ├── test_rag_quick.py             # Quick end-to-end RAG validation
+│   ├── test_full_rag.py              # Full pipeline tests
+│   └── diag_native_crash.py          # macOS / native dependency diagnostic
 │
 ├── src/
-│   Core Medibot library code
-│   │
 │   ├── embeddings/
-│   │   Sentence-transformer embedding wrappers
-│   │
+│   │   └── embedding_generator.py    # SentenceTransformer embedding wrapper
 │   ├── ingestion/
-│   │   PDF loading, text extraction, and chunking
-│   │
+│   │   ├── pdf_processor.py          # PDF loading + page metadata
+│   │   └── text_splitter.py          # Chunking strategy
 │   ├── retrieval/
-│   │   FAISS vector store creation, loading, and search
-│   │
+│   │   └── vector_store.py           # FAISS index create/load/search
 │   ├── generation/
-│   │   LLM loading, prompt control, and response generation
-│   │
+│   │   ├── llm_handler.py            # Local Flan-T5 generation wrapper
+│   │   └── prompt_templates.py       # QA prompt + citation formatting
 │   └── utils/
-│       Centralized configuration, logging, and helpers
+│       ├── config.py                 # Central config + validation
+│       └── logger.py                 # Logging + performance timing
 │
-├── tests/
-│   Automated unit and integration tests
-│
-└── docs/ (optional / future)
-    Design notes, experiments, or evaluation results
+└── vectorstore/
+    └── .gitkeep                      # FAISS artifacts generated locally (not committed)
 ```
 
 ---
@@ -288,16 +261,18 @@ http://localhost:8000
 
 ## 💬 Example Questions
 
-These topics fall within the A–B coverage of Volume 1:
+The following example queries illustrate the range of medical questions Medibot can handle, including factual retrieval, multi-step reasoning, and safe uncertainty handling:
 
-| Question | Why It Works |
+| Example Question | What It Demonstrates |
 |---|---|
-| *What are the symptoms of asthma?* | Asthma → A–B scope ✓ |
-| *How is bronchitis diagnosed?* | Bronchitis → A–B scope ✓ |
-| *What causes appendicitis?* | Appendicitis → A–B scope ✓ |
-| *Explain Addison's disease* | Addison's → A–B scope ✓ |
+| *What are the symptoms and common causes of asthma?* | Grounded factual retrieval |
+| *How is bronchitis typically diagnosed?* | Evidence-based clinical explanation |
+| *Explain Addison’s disease in simple terms.* | Clear medical summarization |
+| *How does appendicitis usually progress if left untreated?* | Temporal and causal reasoning |
+| *Can shortness of breath indicate conditions other than asthma?* | Comparative reasoning with safety awareness |
+| *What are the symptoms of a condition not found in the sources?* | Correct uncertainty handling (“I don’t know” behavior) |
 
-Every response includes a grounded answer, cited source pages, and an educational disclaimer.
+Every response is generated **strictly from retrieved medical sources**, includes **explicit citations**, and follows a **conservative, non-hallucinatory response policy**.
 
 ---
 
@@ -393,5 +368,5 @@ MIT License — see [LICENSE](LICENSE) for details.
 ---
 
 <p align="center">
-<em>Retrieves first. Generates second. Cites always.</em>
+  <em>Built on the principle that trustworthy medical AI begins with grounded knowledge, transparent reasoning, and source-backed answers.</em>
 </p>
