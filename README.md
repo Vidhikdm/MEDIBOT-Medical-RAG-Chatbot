@@ -368,8 +368,8 @@ MIT License — see [LICENSE](LICENSE) for details.
 ---
 
 <p align="center">
-<em>
-Built on the principle that trustworthy medical AI begins with grounded knowledge,
-transparent reasoning, and verifiable sources.
-</em>
+  <em>
+    Built on the belief that trustworthy medical AI starts with grounded knowledge,
+    transparent reasoning, and verifiable sources.
+  </em>
 </p>
