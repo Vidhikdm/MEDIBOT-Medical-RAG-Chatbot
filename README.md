@@ -372,6 +372,4 @@ MIT License — see [LICENSE](LICENSE) for details.
     Built on the belief that trustworthy medical AI starts with grounded knowledge,
     transparent reasoning, and verifiable sources.
   </em>
-</p>
-
----
+</p> 
